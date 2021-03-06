@@ -4,6 +4,7 @@ import { Header } from "./header";
 import { Footer } from "./footer";
 import { colors } from "../utils/colors";
 import styled from "styled-components";
+import { getWeatherDataCSV, getWeatherDataJson } from "../api/weatherData";
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -19,6 +20,13 @@ const LineBreak = styled.div`
 `;
 
 const MainLayout = ({ children, location }: MainLayoutProps): JSX.Element => {
+  const getWeatherData = async () => {
+    const weatherDataJson = getWeatherDataJson();
+    const weatherDataCsv = await getWeatherDataCSV();
+    console.log(weatherDataJson, weatherDataCsv);
+    debugger;
+  };
+  getWeatherData();
   return (
     <div style={{ marginBottom: "20px" }}>
       <Header />

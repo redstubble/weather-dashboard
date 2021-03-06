@@ -21,6 +21,7 @@
     "strictNullChecks": true,
     "inlineSources": true,
     "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
   }
 }
