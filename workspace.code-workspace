@@ -1,0 +1,14 @@
+{
+  "folders": [
+		{
+			"path": "../website"
+		},
+		{
+			"path": "../gt"
+		},
+		{
+			"path": "."
+		}
+	],
+  "settings": {}
+}

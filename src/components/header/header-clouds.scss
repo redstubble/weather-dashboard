@@ -1,0 +1,166 @@
+.header-banner h1.redstubble-logo {
+  padding-top: 60px;
+  margin-top: 0;
+  & a {
+    color: #4f2323 !important;
+    font-weight: 900;
+    text-transform: uppercase;
+    overflow: hidden;
+    padding: 10px 0;
+    transition: color 0.3s;
+    outline: none;
+    text-decoration: none;
+    position: relative;
+    line-height: 1;
+    color: #9e9ba4;
+    display: inline-block;
+    &:hover {
+      color: #8e2d2d;
+      text-decoration: none;
+      &::before {
+        -webkit-transform: translate3d(300%, 0, 0) scale3d(0, 1, 1);
+        transform: translate3d(300%, 0, 0) scale3d(0, 1, 1);
+      }
+      &::after {
+        -webkit-transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+        transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+      }
+      & span {
+        color: #e18728;
+        -webkit-transform: perspective(1000px) rotate3d(0, 1, 0, 180deg);
+        transform: perspective(1000px) rotate3d(0, 1, 0, 180deg);
+      }
+    }
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 30%;
+      height: 5px;
+      background: #e18728;
+      bottom: 0;
+      left: 35%;
+      -webkit-transition: -webkit-transform 0.5s;
+      transition: transform 0.5s;
+      -webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+      transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    &::after {
+      background: #4472b9;
+      -webkit-transform: translate3d(-300%, 0, 0) scale3d(0, 1, 1);
+      transform: translate3d(-300%, 0, 0) scale3d(0, 1, 1);
+    }
+    & span {
+      color: #4472b9;
+      display: inline-block;
+      position: relative;
+      -webkit-transform: perspective(1000px) rotate3d(0, 1, 0, 0deg);
+      transform: perspective(1000px) rotate3d(0, 1, 0, 0deg);
+      -webkit-transition: -webkit-transform 0.5s, color 0.5s;
+      transition: transform 0.5s, color 0.5s;
+      -webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+      transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+    }
+  }
+}
+
+.clouds {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background-color: #87cefa;
+
+  .cloud {
+    position: absolute;
+    right: 120%;
+    width: 200px;
+    height: 40px;
+    background: #fff;
+    -webkit-border-radius: 200px;
+    border-radius: 200px;
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      top: -15px;
+      left: 10px;
+      width: 100px;
+      height: 80px;
+      background: #fff;
+      -webkit-border-radius: 100px;
+      border-radius: 100px;
+      -webkit-transform: rotate(30deg);
+      -moz-transform: rotate(30deg);
+      transform: rotate(30deg);
+    }
+    &:after {
+      top: -55px;
+      left: auto;
+      right: 15px;
+      width: 120px;
+      height: 120px;
+    }
+  }
+  & /* line 144, ../sass/_custom.scss */
+  .one {
+    top: 25px;
+    -webkit-animation: moveclouds 30s linear infinite;
+    -moz-animation: moveclouds 30s linear infinite;
+    -o-animation: moveclouds 30s linear infinite;
+    animation: moveclouds 30s linear infinite;
+  }
+
+  /* line 152, ../sass/_custom.scss */
+  .two {
+    top: 50px;
+    opacity: 0.8;
+    -webkit-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    transform: scale(0.8);
+    -webkit-animation: moveclouds 45s linear infinite;
+    -moz-animation: moveclouds 45s linear infinite;
+    -o-animation: moveclouds 45s linear infinite;
+    animation: moveclouds 45s linear infinite;
+    -webkit-animation-delay: 5s;
+    -moz-animation-delay: 5s;
+    animation-delay: 5s;
+  }
+
+  /* line 167, ../sass/_custom.scss */
+  .three {
+    top: 75px;
+    opacity: 0.6;
+    -webkit-transform: scale(0.6);
+    -moz-transform: scale(0.6);
+    transform: scale(0.6);
+    -webkit-animation: moveclouds 40s linear infinite;
+    -moz-animation: moveclouds 40s linear infinite;
+    -o-animation: moveclouds 40s linear infinite;
+    animation: moveclouds 40s linear infinite;
+  }
+
+  /* line 179, ../sass/_custom.scss */
+  .four {
+    top: 100px;
+    opacity: 0.75;
+    -webkit-transform: scale(0.75);
+    -moz-transform: scale(0.75);
+    transform: scale(0.75);
+    -webkit-animation: moveclouds 26s linear infinite;
+    -moz-animation: moveclouds 26s linear infinite;
+    -o-animation: moveclouds 26s linear infinite;
+    animation: moveclouds 26s linear infinite;
+    -webkit-animation-delay: 8s;
+    -moz-animation-delay: 8s;
+    animation-delay: 8s;
+  }
+}
+
+@keyframes moveclouds {
+  0% {
+    right: -20%;
+  }
+  100% {
+    right: 120%;
+  }
+}
