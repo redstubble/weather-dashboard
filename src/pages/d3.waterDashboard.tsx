@@ -148,7 +148,7 @@ function WaterDashboard({
           return t;
         })
         .style("stroke", function (d) {
-          return "#000000";
+          return "darkBlue";
         })
         .attr("fill", "none");
 
@@ -215,15 +215,34 @@ function WaterDashboard({
         .text("Water Speed");
       canvas.node.selectAll(".y-axis g text").attr("fill", "#666");
       canvas.node.selectAll(".y-axis g line").attr("stroke", "#666");
+
+      const svg = select("#my_dataviz-water");
+
+      // Handmade legend
+      svg
+        .append("circle")
+        .attr("cx", 10)
+        .attr("cy", 10)
+        .attr("r", 6)
+        .style("fill", "darkBlue");
+      svg
+        .append("text")
+        .attr("x", 20)
+        .attr("y", 10)
+        .text("Water Speed")
+        .style("font-size", "15px")
+        .attr("alignment-baseline", "middle");
     }
   };
 
   return (
     <Container>
       <div className="App">
-        <div className="header">
+        <div className="header" style={{ minHeight: "70px" }}>
           <h3 className="text-muted">Water Dashboard</h3>
+          <svg id="my_dataviz-water" height="30" width="450"></svg>
         </div>
+
         <div
           style={{
             textAlign: "center",

@@ -106,7 +106,7 @@ function WaveDashboard({
         .range([canvas?.y ?? 0, 0])
         .domain([0, 360]);
 
-      const _line = line<[Date, number]>()
+      const _line = line<[Date, number, string]>()
         .curve(curveNatural)
         .x(function (d) {
           return x(d[0]);
@@ -122,16 +122,21 @@ function WaveDashboard({
         .filter((a) => a.sea_surface_wave_maximum_height)
         .map(
           (a) =>
-            [a.datetime!, a.sea_surface_wave_maximum_height!] as [Date, number]
+            [a.datetime!, a.sea_surface_wave_maximum_height!, "max"] as [
+              Date,
+              number,
+              string
+            ]
         );
 
       const waveAvgHeight = mergedWeatherData
         .filter((a) => a.sea_surface_wave_significant_height)
         .map(
           (a) =>
-            [a.datetime!, a.sea_surface_wave_significant_height!] as [
+            [a.datetime!, a.sea_surface_wave_significant_height!, "sig"] as [
               Date,
-              number
+              number,
+              string
             ]
         );
 
@@ -172,7 +177,10 @@ function WaveDashboard({
           return t;
         })
         .style("stroke", function (d) {
-          return "blue";
+          if (d[0][2] === "max") {
+            return "lightBlue";
+          }
+          return "darkBlue";
         })
         .attr("fill", "none");
 
@@ -267,14 +275,60 @@ function WaveDashboard({
 
       canvas.node.selectAll(".y-axis g text").attr("fill", "#666");
       canvas.node.selectAll(".y-axis g line").attr("stroke", "#666");
+
+      const svg = select("#my_dataviz-wave");
+
+      // Handmade legend
+      svg
+        .append("circle")
+        .attr("cx", 10)
+        .attr("cy", 10)
+        .attr("r", 6)
+        .style("fill", "red");
+      svg
+        .append("text")
+        .attr("x", 20)
+        .attr("y", 10)
+        .text("Wave Direction")
+        .style("font-size", "15px")
+        .attr("alignment-baseline", "middle");
+      svg
+        .append("circle")
+        .attr("cx", 150)
+        .attr("cy", 10)
+        .attr("r", 6)
+        .style("fill", "darkBlue");
+
+      svg
+        .append("text")
+        .attr("x", 170)
+        .attr("y", 10)
+        .text("Sig. Wave Height")
+        .style("font-size", "15px")
+        .attr("alignment-baseline", "middle");
+      svg
+        .append("circle")
+        .attr("cx", 300)
+        .attr("cy", 10)
+        .attr("r", 6)
+        .style("fill", "lightBlue");
+
+      svg
+        .append("text")
+        .attr("x", 320)
+        .attr("y", 10)
+        .text("Max Wave Height")
+        .style("font-size", "15px")
+        .attr("alignment-baseline", "middle");
     }
   };
 
   return (
     <Container>
       <div className="App">
-        <div className="header">
+        <div className="header" style={{ minHeight: "70px" }}>
           <h3 className="text-muted">Wave Dashboard</h3>
+          <svg id="my_dataviz-wave" height="30" width="450"></svg>
         </div>
         <div
           style={{
