@@ -54,7 +54,6 @@ function WaterDashboard({
     if (containerDiv && mergedWeatherData) {
       const width = containerDiv?.clientWidth ?? 0;
       const height = containerDiv?.clientHeight ?? 0;
-      debugger;
       const svg = select(wrapperDiv)
         .append("svg")
         .attr("height", height)
@@ -67,20 +66,6 @@ function WaterDashboard({
           "transform",
           "translate(" + defaultCanvas.left + "," + defaultCanvas.top + ")"
         );
-      // const dataset: {
-      //   key: string;
-      //   values: any;
-      //   value: undefined;
-      // }[] = nest<MergedWeatherDataType>()
-      //   .key(function () {
-      //     return "Temperature";
-      //   })
-      //   .rollup((d: MergedWeatherDataType[]) => {
-      //     console.log(d);
-      //     debugger;
-      //     return d[0] as MergedWeatherDataType;
-      //   })
-      //   .entries(mergedWeatherData);
       return {
         x,
         y,
@@ -92,9 +77,6 @@ function WaterDashboard({
   };
 
   const populateGraph = () => {
-    const _timeParse = timeParse("%Y-%m-%dT%H:%M");
-    const formatTime = timeFormat("%Y-%m-%dT%H:%M");
-
     if (mergedWeatherData && canvas) {
       const data = mergedWeatherData;
 
@@ -110,10 +92,9 @@ function WaterDashboard({
         .map((d) => d.surface_sea_water_speed)
         .filter(removeUndefined);
       const windSpeedRange = extent(windSpeed) as [number, number];
-      const [lowestWindSpd, highestWindSpd] = windSpeedRange;
       const y = scaleLinear()
         .range([canvas?.y ?? 0, 0])
-        .domain([lowestWindSpd, highestWindSpd]);
+        .domain(windSpeedRange);
 
       const _line = line<[Date, number]>()
         .curve(curveNatural)
@@ -156,53 +137,19 @@ function WaterDashboard({
         .append("g")
         .attr("class", "axis axis--x")
         .attr("transform", "translate(0," + canvas.y + ")")
-        .call(
-          axisBottom(x).tickFormat(function (d) {
-            const formatMillisecond = timeFormat(".%L"),
-              formatSecond = timeFormat(":%S"),
-              formatMinute = timeFormat("%H:%M"),
-              formatHour = timeFormat("%H:00"),
-              formatDay = timeFormat("%a %d"),
-              formatWeek = timeFormat("%b %d"),
-              formatMonth = timeFormat("%B"),
-              formatYear = timeFormat("%Y"),
-              multiFormat = function (date: Date) {
-                return (timeSecond(date) < date
-                  ? formatMillisecond
-                  : timeMinute(date) < date
-                  ? formatSecond
-                  : timeHour(date) < date
-                  ? formatMinute
-                  : timeDay(date) < date
-                  ? formatHour
-                  : timeMonth(date) < date
-                  ? timeWeek(date) < date
-                    ? formatDay
-                    : formatWeek
-                  : timeYear(date) < date
-                  ? formatMonth
-                  : formatYear)(date);
-              };
-            return multiFormat(d);
-          })
-        );
+        .call(axisBottom(x));
 
       canvas.node
         .append("g")
         .attr("class", "axis y-axis")
-        .call(
-          axisLeft(y).ticks(
-            Math.min(Math.round(Math.floor(canvas.y / 35) + 1), highestWindSpd),
-            ".0f"
-          )
-        )
+        .call(axisLeft(y))
         .append("text")
         .attr(
           "transform",
           "rotate(-90) translate(" +
             -(canvas.y / 2) +
             ", " +
-            -defaultCanvas.left * 0.8 +
+            -defaultCanvas.left +
             ")"
         )
         .attr("class", "label")
@@ -240,7 +187,7 @@ function WaterDashboard({
       <div className="App">
         <div className="header" style={{ minHeight: "70px" }}>
           <h3 className="text-muted">Water Dashboard</h3>
-          <svg id="my_dataviz-water" height="30" width="450"></svg>
+          <svg id="my_dataviz-water" height="30" width={canvas?.x ?? 405}></svg>
         </div>
 
         <div

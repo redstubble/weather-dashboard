@@ -16,7 +16,7 @@ import { max, min, extent } from "d3-array";
 import { scaleOrdinal, scaleTime, scaleLinear } from "d3-scale";
 import { schemeCategory10 } from "d3-scale-chromatic";
 import { line, area, curveNatural, curveStepAfter } from "d3-shape";
-import { axisBottom, axisLeft } from "d3-axis";
+import { axisBottom, axisLeft, axisRight } from "d3-axis";
 import { MergedWeatherDataType, removeUndefined } from "../api/weatherData";
 import { CanvasType, defaultCanvas } from "../utils/canvas";
 import { ElementResize } from "../components/elementResize";
@@ -67,34 +67,16 @@ function WindDashboard({
           "transform",
           "translate(" + defaultCanvas.left + "," + defaultCanvas.top + ")"
         );
-      // const dataset: {
-      //   key: string;
-      //   values: any;
-      //   value: undefined;
-      // }[] = nest<MergedWeatherDataType>()
-      //   .key(function () {
-      //     return "Temperature";
-      //   })
-      //   .rollup((d: MergedWeatherDataType[]) => {
-      //     console.log(d);
-      //     debugger;
-      //     return d[0] as MergedWeatherDataType;
-      //   })
-      //   .entries(mergedWeatherData);
       return {
         x,
         y,
         node,
-        // dataset,
       };
     }
     return undefined;
   };
 
   const populateGraph = () => {
-    const _timeParse = timeParse("%Y-%m-%dT%H:%M");
-    const formatTime = timeFormat("%Y-%m-%dT%H:%M");
-
     if (mergedWeatherData && canvas) {
       const data = mergedWeatherData;
 
@@ -103,7 +85,9 @@ function WindDashboard({
         .map((d) => d.datetime ?? undefined)
         .filter(removeUndefined);
       const range = extent(DateArr) as [Date, Date];
-      const x = scaleTime().range([0, canvas.x]).domain(range);
+      const x = scaleTime()
+        .range([0, canvas.x - 30])
+        .domain(range);
 
       /** Temp on y axis */
       const windSpeed = data
@@ -216,17 +200,14 @@ function WindDashboard({
 
       canvas.node
         .append("g")
-        .attr("transform", "translate(475, 0)")
+        .attr("transform", `translate(${canvas.x - 30}, 0)`)
         .attr("class", "axisRed")
-        .call(axisLeft(y1))
+        .call(axisRight(y1))
         .append("text")
         .attr(
           "transform",
-          "rotate(-90) translate(" +
-            -(canvas.y / 2) +
-            ", " +
-            -defaultCanvas.left * 0.8 +
-            ")"
+          `rotate(-90) translate(${-(canvas.y / 2)}, ${30}
+            )`
         )
         .attr("class", "label")
         .attr("text-anchor", "middle")
@@ -240,7 +221,6 @@ function WindDashboard({
       canvas.node
         .append("g")
         .attr("class", "axis y-axis")
-
         .attr("class", "axisBlue")
 
         .call(
@@ -307,7 +287,7 @@ function WindDashboard({
       <div className="App">
         <div className="header" style={{ minHeight: "70px" }}>
           <h3 className="text-muted">Wind Dashboard</h3>
-          <svg id="my_dataviz-wind" height="30" width="450"></svg>
+          <svg id="my_dataviz-wind" height="30" width={canvas?.x ?? 405}></svg>
         </div>
 
         <div

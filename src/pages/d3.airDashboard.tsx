@@ -147,36 +147,7 @@ function TempDashboard({
         .append("g")
         .attr("class", "axis axis--x")
         .attr("transform", "translate(0," + canvas.y + ")")
-        .call(
-          axisBottom(x).tickFormat(function (d) {
-            const formatMillisecond = timeFormat(".%L"),
-              formatSecond = timeFormat(":%S"),
-              formatMinute = timeFormat("%H:%M"),
-              formatHour = timeFormat("%H:00"),
-              formatDay = timeFormat("%a %d"),
-              formatWeek = timeFormat("%b %d"),
-              formatMonth = timeFormat("%B"),
-              formatYear = timeFormat("%Y"),
-              multiFormat = function (date: Date) {
-                return (timeSecond(date) < date
-                  ? formatMillisecond
-                  : timeMinute(date) < date
-                  ? formatSecond
-                  : timeHour(date) < date
-                  ? formatMinute
-                  : timeDay(date) < date
-                  ? formatHour
-                  : timeMonth(date) < date
-                  ? timeWeek(date) < date
-                    ? formatDay
-                    : formatWeek
-                  : timeYear(date) < date
-                  ? formatMonth
-                  : formatYear)(date);
-              };
-            return multiFormat(d);
-          })
-        );
+        .call(axisBottom(x));
 
       canvas.node
         .append("g")
@@ -231,7 +202,7 @@ function TempDashboard({
       <div className="App">
         <div className="header" style={{ minHeight: "70px" }}>
           <h3 className="text-muted">Air Dashboard</h3>
-          <svg id="my_dataviz-air" height="30" width="450"></svg>
+          <svg id="my_dataviz-air" height="30" width={canvas?.x ?? 405}></svg>
         </div>
 
         <div

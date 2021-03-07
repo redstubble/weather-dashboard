@@ -86,7 +86,9 @@ function WaveDashboard({
         .map((d) => d.datetime ?? undefined)
         .filter(removeUndefined);
       const range = extent(DateArr) as [Date, Date];
-      const x = scaleTime().range([0, canvas.x]).domain(range);
+      const x = scaleTime()
+        .range([0, canvas.x - 30])
+        .domain(range);
 
       /** Temp on y axis */
       const waveHeight = data
@@ -249,20 +251,16 @@ function WaveDashboard({
       canvas.node
         .append("g")
         .attr("class", "axisRed")
-        .attr("transform", "translate(475, 0)")
-
-        .call(axisLeft(y1))
+        .attr("transform", `translate(${canvas.x - 30}, 0)`)
+        .call(axisRight(y1))
 
         .append("text")
         .attr("fill", "red")
 
         .attr(
           "transform",
-          "rotate(-90) translate(" +
-            -(canvas.y / 2) +
-            ", " +
-            -defaultCanvas.left * 0.8 +
-            ")"
+          `rotate(-90) translate(${-(canvas.y / 2)},${30}
+            )`
         )
         .attr("class", "label")
         .attr("text-anchor", "middle")
@@ -328,7 +326,7 @@ function WaveDashboard({
       <div className="App">
         <div className="header" style={{ minHeight: "70px" }}>
           <h3 className="text-muted">Wave Dashboard</h3>
-          <svg id="my_dataviz-wave" height="30" width="450"></svg>
+          <svg id="my_dataviz-wave" height="30" width={canvas?.x ?? 405}></svg>
         </div>
         <div
           style={{
