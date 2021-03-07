@@ -103,8 +103,18 @@ function WindDashboard({
         .range([canvas?.y ?? 0, 0])
         .domain([0, 360]);
 
+      const _area = area<[Date, number]>()
+        .curve(curveStepAfter)
+        .x(function (d) {
+          return x(d[0]);
+        })
+        .y0(canvas.y)
+        .y1(function (d) {
+          return y(d[1]);
+        });
+
       const _line = line<[Date, number]>()
-        .curve(curveNatural)
+        .curve(curveStepAfter)
         .x(function (d) {
           return x(d[0]);
         })
@@ -125,25 +135,6 @@ function WindDashboard({
             ]
         );
 
-      canvas?.node
-        .append("g")
-        .selectAll("dot")
-        .data(
-          mergedWeatherData.filter(
-            (d) => d.wind_from_direction_at_10m_above_ground_level
-          )
-        )
-        .enter()
-        .append("circle")
-        .attr("cx", function (d: MergedWeatherDataType) {
-          return x(d.datetime!);
-        })
-        .attr("cy", function (d: MergedWeatherDataType) {
-          return y1(d.wind_from_direction_at_10m_above_ground_level!);
-        })
-        .attr("r", 1.5)
-        .style("fill", "red");
-
       canvas.node
         .append("g")
         .selectAll(".location")
@@ -154,14 +145,14 @@ function WindDashboard({
         .append("path")
         .attr("class", "line")
         .attr("d", function (d) {
-          const t = _line(d);
+          const t = _area(d);
           console.log(t);
           return t;
         })
         .style("stroke", function (d) {
           return "darkBlue";
         })
-        .attr("fill", "none");
+        .attr("fill", "darkBlue");
 
       canvas?.node
         .append("g")
@@ -197,6 +188,25 @@ function WindDashboard({
             return multiFormat(d);
           })
         );
+
+      canvas?.node
+        .append("g")
+        .selectAll("dot")
+        .data(
+          mergedWeatherData.filter(
+            (d) => d.wind_from_direction_at_10m_above_ground_level
+          )
+        )
+        .enter()
+        .append("circle")
+        .attr("cx", function (d: MergedWeatherDataType) {
+          return x(d.datetime!);
+        })
+        .attr("cy", function (d: MergedWeatherDataType) {
+          return y1(d.wind_from_direction_at_10m_above_ground_level!);
+        })
+        .attr("r", 1.5)
+        .style("fill", "red");
 
       canvas.node
         .append("g")

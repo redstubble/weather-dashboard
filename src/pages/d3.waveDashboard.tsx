@@ -118,6 +118,16 @@ function WaveDashboard({
           return y(d[1]);
         });
 
+      const _area = area<[Date, number, string]>()
+        .curve(curveStepAfter)
+        .x(function (d) {
+          return x(d[0]);
+        })
+        .y0(canvas.y)
+        .y1(function (d) {
+          return y(d[1]);
+        });
+
       const lineGraph = canvas.node.append("g");
 
       const waveMaxHeight = mergedWeatherData
@@ -142,6 +152,32 @@ function WaveDashboard({
             ]
         );
 
+      canvas.node
+        .append("g")
+        .selectAll(".location")
+        .data([waveMaxHeight, waveAvgHeight])
+        .enter()
+        .append("g")
+        .attr("class", "location")
+        .append("path")
+        .attr("fill", function (d) {
+          if (d[0][2] === "max") {
+            return "lightBlue";
+          }
+          return "darkBlue";
+        })
+        .style("stroke", function (d) {
+          if (d[0][2] === "max") {
+            return "lightBlue";
+          }
+          return "darkBlue";
+        })
+        .attr("d", function (d) {
+          const t = _area(d);
+          console.log(t);
+          return t;
+        });
+
       canvas?.node
         .append("g")
         .selectAll("dot")
@@ -163,28 +199,6 @@ function WaveDashboard({
         })
         .attr("r", 1.5)
         .style("fill", "red");
-
-      canvas.node
-        .append("g")
-        .selectAll(".location")
-        .data([waveMaxHeight, waveAvgHeight])
-        .enter()
-        .append("g")
-        .attr("class", "location")
-        .append("path")
-        .attr("class", "line axisBlue")
-        .attr("d", function (d) {
-          const t = _line(d);
-          console.log(t);
-          return t;
-        })
-        .style("stroke", function (d) {
-          if (d[0][2] === "max") {
-            return "lightBlue";
-          }
-          return "darkBlue";
-        })
-        .attr("fill", "none");
 
       canvas?.node
         .append("g")
