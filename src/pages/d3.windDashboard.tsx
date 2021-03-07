@@ -21,14 +21,14 @@ import { MergedWeatherDataType, removeUndefined } from "../api/weatherData";
 import { CanvasType, defaultCanvas } from "../utils/canvas";
 import { useDetectElementResize } from "use-element-resize";
 
-const wrapperDiv = ".graph-wave-heihgt";
+const wrapperDiv = ".graph-wind";
 
-function WaveDashboard({
+function WindDashboard({
   mergedWeatherData,
 }: {
   mergedWeatherData: MergedWeatherDataType[] | undefined;
 }) {
-  const targetId = "graph-canvas-wave-height";
+  const targetId = "graph-canvas-wind";
   const [canvas, setCanvas] = useState<CanvasType>();
   const target = { id: targetId };
   const [width, height] = useDetectElementResize(target);
@@ -106,19 +106,18 @@ function WaveDashboard({
       const x = scaleTime().range([0, canvas.x]).domain(range);
 
       /** Temp on y axis */
-      const waveHeight = data
-        .map((d) => [
-          d.sea_surface_wave_maximum_height ?? undefined,
-          d.sea_surface_wave_significant_height ?? undefined,
-        ])
-        .flat()
+      const windSpeed = data
+        .map((d) => d.wind_speed_at_10m_above_ground_level)
         .filter(removeUndefined);
-      const waveHeightRange = extent(waveHeight) as [number, number];
-      const [lowestWave, highestWave] = waveHeightRange;
-      debugger;
+      const windSpeedRange = extent(windSpeed) as [number, number];
+      const [lowestWindSpd, highestWindSpd] = windSpeedRange;
       const y = scaleLinear()
         .range([canvas?.y ?? 0, 0])
-        .domain([lowestWave, highestWave]);
+        .domain([lowestWindSpd, highestWindSpd]);
+
+      const y1 = scaleLinear()
+        .range([canvas?.y ?? 0, 0])
+        .domain([0, 360]);
 
       const _line = line<[Date, number]>()
         .curve(curveNatural)
@@ -132,27 +131,39 @@ function WaveDashboard({
 
       const lineGraph = canvas.node.append("g");
 
-      const waveMaxHeight = mergedWeatherData
-        .filter((a) => a.sea_surface_wave_maximum_height)
+      const windSpeedData = mergedWeatherData
+        .filter((a) => a.wind_speed_at_10m_above_ground_level)
         .map(
           (a) =>
-            [a.datetime!, a.sea_surface_wave_maximum_height!] as [Date, number]
-        );
-
-      const waveAvgHeight = mergedWeatherData
-        .filter((a) => a.sea_surface_wave_significant_height)
-        .map(
-          (a) =>
-            [a.datetime!, a.sea_surface_wave_significant_height!] as [
+            [a.datetime!, a.wind_speed_at_10m_above_ground_level!] as [
               Date,
               number
             ]
         );
 
+      canvas?.node
+        .append("g")
+        .selectAll("dot")
+        .data(
+          mergedWeatherData.filter(
+            (d) => d.wind_from_direction_at_10m_above_ground_level
+          )
+        )
+        .enter()
+        .append("circle")
+        .attr("cx", function (d: MergedWeatherDataType) {
+          return x(d.datetime!);
+        })
+        .attr("cy", function (d: MergedWeatherDataType) {
+          return y1(d.wind_from_direction_at_10m_above_ground_level!);
+        })
+        .attr("r", 1.5)
+        .style("fill", "#69b3a2");
+
       canvas.node
         .append("g")
         .selectAll(".location")
-        .data([waveMaxHeight, waveAvgHeight])
+        .data([windSpeedData])
         .enter()
         .append("g")
         .attr("class", "location")
@@ -205,10 +216,33 @@ function WaveDashboard({
 
       canvas.node
         .append("g")
+        .attr("class", "axisSteelBlue")
+        .attr("transform", "translate(475, 0)")
+        .call(axisLeft(y1))
+        .append("text")
+        .attr(
+          "transform",
+          "rotate(-90) translate(" +
+            -(canvas.y / 2) +
+            ", " +
+            -defaultCanvas.left * 0.8 +
+            ")"
+        )
+        .attr("class", "label")
+        .attr("text-anchor", "middle")
+        .style("font-weight", "normal")
+        .style("font-size", "12px")
+        .attr("y", 6)
+        .attr("dy", ".35em")
+        .attr("fill", "#666")
+        .text("Direction");
+
+      canvas.node
+        .append("g")
         .attr("class", "axis y-axis")
         .call(
           axisLeft(y).ticks(
-            Math.min(Math.round(Math.floor(canvas.y / 35) + 1), highestWave),
+            Math.min(Math.round(Math.floor(canvas.y / 35) + 1), highestWindSpd),
             ".0f"
           )
         )
@@ -228,7 +262,7 @@ function WaveDashboard({
         .attr("y", 6)
         .attr("dy", ".35em")
         .attr("fill", "#666")
-        .text("Height");
+        .text("Wind Speed");
       canvas.node.selectAll(".y-axis g text").attr("fill", "#666");
       canvas.node.selectAll(".y-axis g line").attr("stroke", "#666");
     }
@@ -238,7 +272,7 @@ function WaveDashboard({
     <Container>
       <div className="App">
         <div className="header">
-          <h3 className="text-muted">Wave Dashboard</h3>
+          <h3 className="text-muted">Wind Dashboard</h3>
         </div>
         <div
           style={{
@@ -255,4 +289,4 @@ function WaveDashboard({
   );
 }
 
-export { WaveDashboard };
+export { WindDashboard };
