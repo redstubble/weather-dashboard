@@ -91,9 +91,6 @@ function TempDashboard({
   };
 
   const populateGraph = () => {
-    const _timeParse = timeParse("%Y-%m-%dT%H:%M");
-    const formatTime = timeFormat("%Y-%m-%dT%H:%M");
-
     if (mergedWeatherData && canvas) {
       const data = mergedWeatherData;
 

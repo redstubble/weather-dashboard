@@ -127,7 +127,7 @@ function WaterDashboard({
 
       const lineGraph = canvas.node.append("g");
 
-      const windSpeedData = mergedWeatherData
+      const waterSpeedData = mergedWeatherData
         .filter((a) => a.surface_sea_water_speed)
         .map(
           (a) => [a.datetime!, a.surface_sea_water_speed!] as [Date, number]
@@ -136,7 +136,7 @@ function WaterDashboard({
       canvas.node
         .append("g")
         .selectAll(".location")
-        .data([windSpeedData])
+        .data([waterSpeedData])
         .enter()
         .append("g")
         .attr("class", "location")

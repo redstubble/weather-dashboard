@@ -40298,6 +40298,19 @@
      background-color: #FCFCFD;
    }
  }
+
+ .axisRed line{
+  stroke: red;
+}
+
+.axisRed path{
+  stroke: red;
+}
+
+.axisRed text{
+  fill: red;
+}  
+
  
  /*******************************
           Site Overrides

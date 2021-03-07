@@ -155,7 +155,7 @@ function WaveDashboard({
           );
         })
         .attr("r", 1.5)
-        .style("fill", "#69b3a2");
+        .style("fill", "red");
 
       canvas.node
         .append("g")
@@ -165,14 +165,14 @@ function WaveDashboard({
         .append("g")
         .attr("class", "location")
         .append("path")
-        .attr("class", "line")
+        .attr("class", "line axisBlue")
         .attr("d", function (d) {
           const t = _line(d);
           console.log(t);
           return t;
         })
         .style("stroke", function (d) {
-          return "#000000";
+          return "blue";
         })
         .attr("fill", "none");
 
@@ -213,7 +213,7 @@ function WaveDashboard({
 
       canvas.node
         .append("g")
-        .attr("class", "axis y-axis")
+        .attr("class", "axis y-axis axisBlue")
         .call(
           axisLeft(y).ticks(
             Math.min(Math.round(Math.floor(canvas.y / 35) + 1), highestWave),
@@ -240,10 +240,14 @@ function WaveDashboard({
 
       canvas.node
         .append("g")
-        .attr("class", "axisSteelBlue")
+        .attr("class", "axisRed")
         .attr("transform", "translate(475, 0)")
+
         .call(axisLeft(y1))
+
         .append("text")
+        .attr("fill", "red")
+
         .attr(
           "transform",
           "rotate(-90) translate(" +
@@ -258,7 +262,7 @@ function WaveDashboard({
         .style("font-size", "12px")
         .attr("y", 6)
         .attr("dy", ".35em")
-        .attr("fill", "#666")
+        .attr("fill", "red")
         .text("Direction");
 
       canvas.node.selectAll(".y-axis g text").attr("fill", "#666");

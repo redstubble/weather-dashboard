@@ -56,16 +56,16 @@ function IndexPage({ location, data }: IndexPageProps): JSX.Element {
     <MainLayout location={location}>
       <Container>
         <Grid stackable columns={2} padded>
-          <Grid.Column color={"red"} key={"red"}>
+          <Grid.Column key={"red"}>
             <TempDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
-          <Grid.Column color={"blue"} key={"blue"}>
+          <Grid.Column key={"blue"}>
             <WaveDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
-          <Grid.Column color={"olive"} key={"olive"}>
+          <Grid.Column key={"olive"}>
             <WindDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
-          <Grid.Column color={"green"} key={"green"}>
+          <Grid.Column key={"green"}>
             <WaterDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
         </Grid>

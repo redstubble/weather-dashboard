@@ -158,7 +158,7 @@ function WindDashboard({
           return y1(d.wind_from_direction_at_10m_above_ground_level!);
         })
         .attr("r", 1.5)
-        .style("fill", "#69b3a2");
+        .style("fill", "red");
 
       canvas.node
         .append("g")
@@ -175,7 +175,7 @@ function WindDashboard({
           return t;
         })
         .style("stroke", function (d) {
-          return "#000000";
+          return "blue";
         })
         .attr("fill", "none");
 
@@ -216,8 +216,8 @@ function WindDashboard({
 
       canvas.node
         .append("g")
-        .attr("class", "axisSteelBlue")
         .attr("transform", "translate(475, 0)")
+        .attr("class", "axisRed")
         .call(axisLeft(y1))
         .append("text")
         .attr(
@@ -234,12 +234,15 @@ function WindDashboard({
         .style("font-size", "12px")
         .attr("y", 6)
         .attr("dy", ".35em")
-        .attr("fill", "#666")
+        .attr("fill", "red")
         .text("Direction");
 
       canvas.node
         .append("g")
         .attr("class", "axis y-axis")
+
+        .attr("class", "axisBlue")
+
         .call(
           axisLeft(y).ticks(
             Math.min(Math.round(Math.floor(canvas.y / 35) + 1), highestWindSpd),
