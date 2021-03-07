@@ -1,8 +1,7 @@
-import React, { Component, useEffect, useState } from "react";
-import { Container, Form, Checkbox } from "semantic-ui-react";
-import { nest } from "d3-collection";
+import React, { useEffect, useState } from "react";
+import { Container } from "semantic-ui-react";
 import { select } from "d3-selection";
-import { timeParse, timeFormat } from "d3-time-format";
+import { timeFormat } from "d3-time-format";
 import {
   timeSecond,
   timeMinute,
@@ -12,14 +11,13 @@ import {
   timeWeek,
   timeYear,
 } from "d3-time";
-import { max, min, extent } from "d3-array";
-import { scaleOrdinal, scaleTime, scaleLinear } from "d3-scale";
-import { schemeCategory10 } from "d3-scale-chromatic";
-import { line, area, curveNatural, curveStepAfter } from "d3-shape";
+import { extent } from "d3-array";
+import { scaleTime, scaleLinear } from "d3-scale";
+import { line, curveNatural } from "d3-shape";
 import { axisBottom, axisLeft } from "d3-axis";
 import { MergedWeatherDataType, removeUndefined } from "../api/weatherData";
 import { CanvasType, defaultCanvas } from "../utils/canvas";
-import { useDetectElementResize } from "use-element-resize";
+import { ElementResize } from "../components/elementResize";
 
 const graphDiv = ".graph-canvas";
 
@@ -29,9 +27,8 @@ function TempDashboard({
   mergedWeatherData: MergedWeatherDataType[] | undefined;
 }) {
   const [canvas, setCanvas] = useState<CanvasType>();
-  const containerDiv = document.getElementById("graph-canvas-weather");
   const target = { id: "graph-canvas-weather" };
-  const [width, height] = useDetectElementResize(target);
+  const [width, height] = ElementResize(target);
 
   const clearGraph = () => {
     select(graphDiv).selectAll("*").remove();
@@ -50,7 +47,7 @@ function TempDashboard({
   }, [canvas]);
 
   const scaffoldCanvas = (): CanvasType | undefined => {
-    const containerDiv = document.getElementById("graph-canvas-weather");
+    const containerDiv = window.document.getElementById("graph-canvas-weather");
     if (containerDiv && mergedWeatherData) {
       const width = containerDiv?.clientWidth ?? 0;
       const height = containerDiv?.clientHeight ?? 0;
@@ -252,4 +249,4 @@ function TempDashboard({
   );
 }
 
-export { TempDashboard };
+export default TempDashboard;

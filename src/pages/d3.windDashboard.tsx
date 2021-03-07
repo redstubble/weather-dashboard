@@ -19,7 +19,7 @@ import { line, area, curveNatural, curveStepAfter } from "d3-shape";
 import { axisBottom, axisLeft } from "d3-axis";
 import { MergedWeatherDataType, removeUndefined } from "../api/weatherData";
 import { CanvasType, defaultCanvas } from "../utils/canvas";
-import { useDetectElementResize } from "use-element-resize";
+import { ElementResize } from "../components/elementResize";
 
 const wrapperDiv = ".graph-wind";
 
@@ -31,7 +31,7 @@ function WindDashboard({
   const targetId = "graph-canvas-wind";
   const [canvas, setCanvas] = useState<CanvasType>();
   const target = { id: targetId };
-  const [width, height] = useDetectElementResize(target);
+  const [width, height] = ElementResize(target);
 
   const clearGraph = () => {
     select(wrapperDiv).selectAll("*").remove();
@@ -50,7 +50,7 @@ function WindDashboard({
   }, [canvas]);
 
   const scaffoldCanvas = (): CanvasType | undefined => {
-    const containerDiv = document.getElementById(targetId);
+    const containerDiv = window.document.getElementById(targetId);
     if (containerDiv && mergedWeatherData) {
       const width = containerDiv?.clientWidth ?? 0;
       const height = containerDiv?.clientHeight ?? 0;
@@ -325,4 +325,4 @@ function WindDashboard({
   );
 }
 
-export { WindDashboard };
+export default WindDashboard;

@@ -19,8 +19,8 @@ import { line, area, curveNatural, curveStepAfter } from "d3-shape";
 import { axisBottom, axisLeft, axisRight } from "d3-axis";
 import { MergedWeatherDataType, removeUndefined } from "../api/weatherData";
 import { CanvasType, defaultCanvas } from "../utils/canvas";
-import { useDetectElementResize } from "use-element-resize";
 import { svg } from "d3";
+import { ElementResize } from "../components/elementResize";
 
 const wrapperDiv = ".graph-wave-heihgt";
 
@@ -32,7 +32,7 @@ function WaveDashboard({
   const targetId = "graph-canvas-wave-height";
   const [canvas, setCanvas] = useState<CanvasType>();
   const target = { id: targetId };
-  const [width, height] = useDetectElementResize(target);
+  const [width, height] = ElementResize(target);
 
   const clearGraph = () => {
     select(wrapperDiv).selectAll("*").remove();
@@ -51,7 +51,7 @@ function WaveDashboard({
   }, [canvas]);
 
   const scaffoldCanvas = (): CanvasType | undefined => {
-    const containerDiv = document.getElementById(targetId);
+    const containerDiv = window.document.getElementById(targetId);
     if (containerDiv && mergedWeatherData) {
       const width = containerDiv?.clientWidth ?? 0;
       const height = containerDiv?.clientHeight ?? 0;
@@ -345,4 +345,4 @@ function WaveDashboard({
   );
 }
 
-export { WaveDashboard };
+export default WaveDashboard;
