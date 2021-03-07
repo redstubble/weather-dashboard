@@ -23,7 +23,7 @@ import { useDetectElementResize } from "use-element-resize";
 
 const wrapperDiv = ".graph-wave-heihgt";
 
-function WaveHeightDashboard({
+function WaveDashboard({
   mergedWeatherData,
 }: {
   mergedWeatherData: MergedWeatherDataType[] | undefined;
@@ -238,7 +238,7 @@ function WaveHeightDashboard({
     <Container>
       <div className="App">
         <div className="header">
-          <h3 className="text-muted">Wave Height</h3>
+          <h3 className="text-muted">Wave Dashboard</h3>
         </div>
         <div
           style={{
@@ -255,4 +255,4 @@ function WaveHeightDashboard({
   );
 }
 
-export { WaveHeightDashboard };
+export { WaveDashboard };

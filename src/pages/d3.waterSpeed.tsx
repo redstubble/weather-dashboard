@@ -222,7 +222,7 @@ function WaterDashboard({
     <Container>
       <div className="App">
         <div className="header">
-          <h3 className="text-muted">Water Speed</h3>
+          <h3 className="text-muted">Water Dashboard</h3>
         </div>
         <div
           style={{

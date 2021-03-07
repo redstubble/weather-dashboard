@@ -8,7 +8,7 @@ import {
 } from "../api/weatherData";
 import { MainLayout } from "../components/layout";
 import { TempDashboard } from "./d3.temperature";
-import { WaveHeightDashboard } from "./d3.waveHeight";
+import { WaveDashboard } from "./d3.waveHeight";
 import { WindDashboard } from "./d3.windDirSpd";
 import { WaterDashboard } from "./d3.waterSpeed";
 
@@ -60,7 +60,7 @@ function IndexPage({ location, data }: IndexPageProps): JSX.Element {
             <TempDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
           <Grid.Column color={"blue"} key={"blue"}>
-            <WaveHeightDashboard mergedWeatherData={mergedWeatherData} />
+            <WaveDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
           <Grid.Column color={"olive"} key={"olive"}>
             <WindDashboard mergedWeatherData={mergedWeatherData} />

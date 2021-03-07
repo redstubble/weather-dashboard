@@ -226,7 +226,7 @@ function WindDashboard({
     <Container>
       <div className="App">
         <div className="header">
-          <h3 className="text-muted">Wind Direction / Speed at 10m</h3>
+          <h3 className="text-muted">Wind Dashboard</h3>
         </div>
         <div
           style={{

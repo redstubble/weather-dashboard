@@ -219,7 +219,7 @@ function TempDashboard({
     <Container>
       <div className="App">
         <div className="header">
-          <h3 className="text-muted">Air Temp 2m</h3>
+          <h3 className="text-muted">Air Dashboard</h3>
         </div>
         <div
           style={{
