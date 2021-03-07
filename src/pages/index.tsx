@@ -10,6 +10,7 @@ import { MainLayout } from "../components/layout";
 import { TempDashboard } from "./d3.temperature";
 import { WaveHeightDashboard } from "./d3.waveHeight";
 import { WindDashboard } from "./d3.windDirSpd";
+import { WaterDashboard } from "./d3.waterSpeed";
 
 // Please note that you can use https://github.com/dotansimha/graphql-code-generator
 // to generate all types from graphQL schema
@@ -59,15 +60,13 @@ function IndexPage({ location, data }: IndexPageProps): JSX.Element {
             <TempDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
           <Grid.Column color={"blue"} key={"blue"}>
-            Wave Max Height / Significant Height
             <WaveHeightDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
           <Grid.Column color={"olive"} key={"olive"}>
-            Wind Direction / Wind Speed
             <WindDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
           <Grid.Column color={"green"} key={"green"}>
-            Wave Direction / Water Speed
+            <WaterDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
         </Grid>
       </Container>

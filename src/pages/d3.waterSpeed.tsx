@@ -21,14 +21,14 @@ import { MergedWeatherDataType, removeUndefined } from "../api/weatherData";
 import { CanvasType, defaultCanvas } from "../utils/canvas";
 import { useDetectElementResize } from "use-element-resize";
 
-const wrapperDiv = ".graph-wind";
+const wrapperDiv = ".graph-water";
 
-function WindDashboard({
+function WaterDashboard({
   mergedWeatherData,
 }: {
   mergedWeatherData: MergedWeatherDataType[] | undefined;
 }) {
-  const targetId = "graph-canvas-wind";
+  const targetId = "graph-canvas-water";
   const [canvas, setCanvas] = useState<CanvasType>();
   const target = { id: targetId };
   const [width, height] = useDetectElementResize(target);
@@ -107,7 +107,7 @@ function WindDashboard({
 
       /** Temp on y axis */
       const windSpeed = data
-        .map((d) => d.wind_speed_at_10m_above_ground_level)
+        .map((d) => d.surface_sea_water_speed)
         .filter(removeUndefined);
       const windSpeedRange = extent(windSpeed) as [number, number];
       const [lowestWindSpd, highestWindSpd] = windSpeedRange;
@@ -128,13 +128,9 @@ function WindDashboard({
       const lineGraph = canvas.node.append("g");
 
       const windSpeedData = mergedWeatherData
-        .filter((a) => a.wind_speed_at_10m_above_ground_level)
+        .filter((a) => a.surface_sea_water_speed)
         .map(
-          (a) =>
-            [a.datetime!, a.wind_speed_at_10m_above_ground_level!] as [
-              Date,
-              number
-            ]
+          (a) => [a.datetime!, a.surface_sea_water_speed!] as [Date, number]
         );
 
       canvas.node
@@ -216,7 +212,7 @@ function WindDashboard({
         .attr("y", 6)
         .attr("dy", ".35em")
         .attr("fill", "#666")
-        .text("Wind Speed");
+        .text("Water Speed");
       canvas.node.selectAll(".y-axis g text").attr("fill", "#666");
       canvas.node.selectAll(".y-axis g line").attr("stroke", "#666");
     }
@@ -226,7 +222,7 @@ function WindDashboard({
     <Container>
       <div className="App">
         <div className="header">
-          <h3 className="text-muted">Wind Direction / Speed at 10m</h3>
+          <h3 className="text-muted">Water Speed</h3>
         </div>
         <div
           style={{
@@ -243,4 +239,4 @@ function WindDashboard({
   );
 }
 
-export { WindDashboard };
+export { WaterDashboard };

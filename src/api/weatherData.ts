@@ -104,7 +104,10 @@ const getMergedWeatherData = async () => {
     })
     .filter(removeUndefined);
   const r = [...weatherJson, ...mergedCsv] as MergedWeatherDataType[];
-  return r;
+  return r.sort(
+    (a, b) =>
+      ((a.datetime as unknown) as number) - ((b.datetime! as unknown) as number)
+  );
 };
 
 export const removeUndefined = <S>(value: S | undefined): value is S =>
