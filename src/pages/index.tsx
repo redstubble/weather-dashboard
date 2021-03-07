@@ -1,8 +1,15 @@
+import "semantic-ui-css/semantic.css";
 import { graphql, PageProps } from "gatsby";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Grid } from "semantic-ui-react";
+import {
+  getMergedWeatherData,
+  MergedWeatherDataType,
+} from "../api/weatherData";
 import { MainLayout } from "../components/layout";
-import Source from "../components/source";
+import { TempDashboard } from "./d3.temperature";
+import { WaveHeightDashboard } from "./d3.waveHeight";
+import { WindDashboard } from "./d3.windDirSpd";
 
 // Please note that you can use https://github.com/dotansimha/graphql-code-generator
 // to generate all types from graphQL schema
@@ -31,29 +38,39 @@ function IndexPage({ location, data }: IndexPageProps): JSX.Element {
   const hello = "Hello";
   const { siteName } = data.site.siteMetadata;
 
+  const [mergedWeatherData, setMergedWeatherData] = useState<
+    MergedWeatherDataType[]
+  >();
+
+  useEffect(() => {
+    const getWeatherData = async () => {
+      const weatherDataJson = await getMergedWeatherData();
+      console.log(weatherDataJson);
+      setMergedWeatherData(weatherDataJson);
+    };
+    getWeatherData();
+  }, []);
+
   return (
     <MainLayout location={location}>
       <Container>
         <Grid stackable columns={2} padded>
           <Grid.Column color={"red"} key={"red"}>
-            Hello
+            <TempDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
           <Grid.Column color={"blue"} key={"blue"}>
-            How
+            Wave Max Height / Significant Height
+            <WaveHeightDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
           <Grid.Column color={"olive"} key={"olive"}>
-            Are
+            Wind Direction / Wind Speed
+            <WindDashboard mergedWeatherData={mergedWeatherData} />
           </Grid.Column>
           <Grid.Column color={"green"} key={"green"}>
-            You
+            Wave Direction / Water Speed
           </Grid.Column>
         </Grid>
       </Container>
-      <h1>{hello} TypeScript world!</h1>
-      <p>
-        This site is named <strong>{siteName}</strong>
-      </p>
-      <Source description="Interested in details of this site?" />
     </MainLayout>
   );
 }
