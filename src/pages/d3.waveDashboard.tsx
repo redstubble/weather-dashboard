@@ -83,7 +83,16 @@ function WaveDashboard({
 
       /** Time on x axis */
       const DateArr = data
-        .map((d) => d.datetime ?? undefined)
+        .map((d) => {
+          if (
+            d.datetime &&
+            (d.sea_surface_wave_maximum_height ||
+              d.sea_surface_wave_significant_height)
+          ) {
+            return d.datetime;
+          }
+          return undefined;
+        })
         .filter(removeUndefined);
       const range = extent(DateArr) as [Date, Date];
       const x = scaleTime()

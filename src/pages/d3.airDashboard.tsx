@@ -93,7 +93,12 @@ function TempDashboard({
 
       /** Time on x axis */
       const DateArr = data
-        .map((d) => d.datetime ?? undefined)
+        .map((d) => {
+          if (d.datetime && d.air_temperature_at_2m_above_ground_level) {
+            return d.datetime;
+          }
+          return undefined;
+        })
         .filter(removeUndefined);
       const range = extent(DateArr) as [Date, Date];
       const x = scaleTime().range([0, canvas.x]).domain(range);

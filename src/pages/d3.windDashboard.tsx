@@ -82,7 +82,16 @@ function WindDashboard({
 
       /** Time on x axis */
       const DateArr = data
-        .map((d) => d.datetime ?? undefined)
+        .map((d) => {
+          if (
+            d.datetime &&
+            (d.wind_from_direction_at_10m_above_ground_level ||
+              d.wind_speed_at_10m_above_ground_level)
+          ) {
+            return d.datetime;
+          }
+          return undefined;
+        })
         .filter(removeUndefined);
       const range = extent(DateArr) as [Date, Date];
       const x = scaleTime()

@@ -82,7 +82,12 @@ function WaterDashboard({
 
       /** Time on x axis */
       const DateArr = data
-        .map((d) => d.datetime ?? undefined)
+        .map((d) => {
+          if (d.datetime && d.surface_sea_water_speed) {
+            return d.datetime;
+          }
+          return undefined;
+        })
         .filter(removeUndefined);
       const range = extent(DateArr) as [Date, Date];
       const x = scaleTime().range([0, canvas.x]).domain(range);
